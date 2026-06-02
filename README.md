@@ -20,6 +20,27 @@
 - 你希望文章自带封面图、正文解释配图和可直接复制的 HTML。
 - 你想稳定复用一种黑白灰、少量红橙蓝批注的咖啡猫手绘正文配图风格。
 
+## 插图预览
+
+下面这些图是内置的咖啡猫风格参考，用来展示线条密度、留白、标注节奏和咖啡猫参与概念工作的方式。
+
+| | |
+|---|---|
+| ![压缩想法](examples/images/kafei-cat-compress-idea.png) | ![内容发酵](examples/images/kafei-cat-content-fermentation.png) |
+| 压缩想法 | 内容发酵 |
+| ![内容机器反馈](examples/images/kafei-cat-content-machine-feedback.png) | ![内容常见坑](examples/images/kafei-cat-content-pitfalls.png) |
+| 内容机器反馈 | 内容常见坑 |
+| ![结尾工具箱](examples/images/kafei-cat-ending-toolbox.png) | ![过滤信号](examples/images/kafei-cat-filter-signals.png) |
+| 结尾工具箱 | 过滤信号 |
+| ![钩子到知识核心](examples/images/kafei-cat-hook-knowledge-core.png) | ![信息井](examples/images/kafei-cat-information-well.png) |
+| 钩子到知识核心 | 信息井 |
+| ![一鱼多用](examples/images/kafei-cat-one-fish-many-uses.png) | ![系统承重](examples/images/kafei-cat-system-bearing.png) |
+| 一鱼多用 | 系统承重 |
+| ![主题漏斗](examples/images/kafei-cat-topic-funnel.png) | ![流量信任转化](examples/images/kafei-cat-traffic-trust-conversion.png) |
+| 主题漏斗 | 流量信任转化 |
+| ![两个断点](examples/images/kafei-cat-two-breakpoints.png) |  |
+| 两个断点 |  |
+
 ## 不适合什么场景
 
 - 只想做普通 Markdown 清理，不需要编辑改写和微信排版。
