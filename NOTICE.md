@@ -1,5 +1,5 @@
-# Notice
+# 说明
 
-This repository is organized in the same public Codex Skill publishing style as `helloianneo/ian-xiaohei-illustrations`: a root README with examples, and an installable skill folder nested inside the repository.
+这个仓库参考了 `helloianneo/ian-xiaohei-illustrations` 的公开 Codex Skill 发布结构：根目录放说明文档和示例，真正可安装的 Skill 放在仓库内的同名子目录中。
 
-The skill content, workflow, scripts, and Kafei Cat illustration system in this repository are authored by Rinkon.
+本仓库中的 Skill 内容、工作流、脚本和咖啡猫配图系统由 Rinkon 创作。
