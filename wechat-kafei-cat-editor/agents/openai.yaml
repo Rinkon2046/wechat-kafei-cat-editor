@@ -1,0 +1,4 @@
+interface:
+  display_name: "微信公众号咖啡猫编辑"
+  short_description: "编辑改写初稿并生成 Ian 风格咖啡猫公众号 HTML"
+  default_prompt: "Use $wechat-kafei-cat-editor to turn my draft or source page into a polished WeChat article, compress source-page clutter, create a 2.35:1 WeChat cover plus Ian-style Kafei Cat illustrations with fresh metaphors, and produce copy-ready HTML."
