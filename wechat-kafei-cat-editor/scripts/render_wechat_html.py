@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import html
+import mimetypes
 import re
 from pathlib import Path
 
@@ -107,8 +109,9 @@ def extract_article(blocks: list[dict[str, str]]) -> tuple[str, str, list[dict[s
     return title or "未命名文章", subtitle, rest
 
 
-def p(text: str, margin: str = "0 0 14px") -> str:
-    return f'  <p style="margin:{margin};color:#444;line-height:1.7;">{inline_markup(text)}</p>'
+def p(text: str, margin: str = "0 0 14px", *, indent: bool = True) -> str:
+    indent_style = "text-indent:2em;" if indent else ""
+    return f'  <p style="margin:{margin};color:#444;font-size:15px;line-height:1.75;{indent_style}">{inline_markup(text)}</p>'
 
 
 def quote(text: str, margin: str = "0 0 24px", size: str = "18px") -> str:
@@ -119,8 +122,8 @@ def quote(text: str, margin: str = "0 0 24px", size: str = "18px") -> str:
     )
 
 
-def image_html(src: str, alt: str = "", caption: str = "") -> list[str]:
-    escaped_src = html.escape(src.strip(), quote=True)
+def image_html(src: str, alt: str = "", caption: str = "", *, inline_images: bool = True) -> list[str]:
+    escaped_src = html.escape(resolve_image_src(src.strip(), inline_images), quote=True)
     escaped_alt = html.escape(alt.strip(), quote=True)
     parts = [
         f'  <p style="margin:24px 0 18px;text-align:center;">'
@@ -134,6 +137,19 @@ def image_html(src: str, alt: str = "", caption: str = "") -> list[str]:
     return parts
 
 
+def resolve_image_src(src: str, inline_images: bool) -> str:
+    if not inline_images or not src or re.match(r"^(?:https?://|data:)", src):
+        return src
+
+    image_path = Path(src).expanduser()
+    if not image_path.exists():
+        return src
+
+    mime_type = mimetypes.guess_type(image_path.name)[0] or "image/png"
+    encoded = base64.b64encode(image_path.read_bytes()).decode("ascii")
+    return f"data:{mime_type};base64,{encoded}"
+
+
 def render(
     title: str,
     subtitle: str,
@@ -142,6 +158,7 @@ def render(
     images: dict[str, list[dict[str, str]]],
     eyebrow: str,
     footer: str,
+    inline_images: bool,
 ) -> str:
     parts: list[str] = [
         "<!doctype html>",
@@ -167,7 +184,7 @@ def render(
         parts.append('  <p style="margin:0 0 28px;padding-bottom:8px;border-bottom:1px solid #eee;"></p>')
 
     for item in images.get("START", []):
-        parts.extend(image_html(item["src"], item.get("alt", ""), item.get("caption", "")))
+        parts.extend(image_html(item["src"], item.get("alt", ""), item.get("caption", ""), inline_images=inline_images))
 
     section_number = 0
     for block in blocks:
@@ -187,13 +204,13 @@ def render(
                 ]
             )
             for item in images.get(text, []):
-                parts.extend(image_html(item["src"], item.get("alt", text), item.get("caption", "")))
+                parts.extend(image_html(item["src"], item.get("alt", text), item.get("caption", ""), inline_images=inline_images))
         elif kind == "quote":
             parts.append(quote(text, margin="0 0 24px" if section_number == 0 else "0 0 14px", size="18px" if section_number == 0 else "17px"))
         elif kind == "image":
-            parts.extend(image_html(block["src"], block.get("alt", ""), block.get("caption", "")))
+            parts.extend(image_html(block["src"], block.get("alt", ""), block.get("caption", ""), inline_images=inline_images))
         elif kind == "list":
-            parts.append(p(f"**•** {text}", margin="0 0 10px"))
+            parts.append(p(f"**•** {text}", margin="0 0 10px", indent=False))
         else:
             parts.append(p(text, margin="0 0 12px"))
 
@@ -206,7 +223,7 @@ def render(
             ]
         )
         for item in citations:
-            parts.append(p(item, margin="0 0 8px"))
+            parts.append(p(item, margin="0 0 8px", indent=False))
 
     parts.extend(
         [
@@ -310,6 +327,7 @@ def main() -> None:
     parser.add_argument("--auto-citations", action="store_true", help="Automatically detect citation/source lines from the input")
     parser.add_argument("--images", help="Optional TSV: after<TAB>section-title-or-START<TAB>image-path<TAB>caption")
     parser.add_argument("--section-only", action="store_true", help="Write only the <section>...</section> fragment for direct WeChat copy/paste")
+    parser.add_argument("--no-inline-images", action="store_true", help="Keep image src paths instead of embedding local images as data URIs")
     parser.add_argument("--eyebrow", default="公众号一键编辑 · 图文整理")
     parser.add_argument("--footer", default="图文整理版 · 适合公众号发布 / 内部分享 / 社群转发")
     args = parser.parse_args()
@@ -318,7 +336,7 @@ def main() -> None:
     blocks = split_blocks(source)
     title, subtitle, rest = extract_article(blocks)
     citations = read_citations(args.citations) if args.citations else (auto_detect_citations(source) if args.auto_citations else [])
-    output = render(title, subtitle, rest, citations, read_images(args.images), args.eyebrow, args.footer)
+    output = render(title, subtitle, rest, citations, read_images(args.images), args.eyebrow, args.footer, not args.no_inline_images)
     if args.section_only:
         match = re.search(r"(<section[\s\S]*?</section>)", output)
         if not match:
