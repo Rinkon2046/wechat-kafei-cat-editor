@@ -108,6 +108,14 @@ npx skills add https://github.com/Rinkon2046/wechat-kafei-cat-editor/tree/main/w
 - 多张正文咖啡猫配图 PNG
 - 一份图片插入位置表
 
+## 致谢
+
+这个 Skill 的仓库发布结构和正文配图方法，参考并致敬 [helloianneo/ian-xiaohei-illustrations](https://github.com/helloianneo/ian-xiaohei-illustrations)。
+
+`ian-xiaohei-illustrations` 将中文文章里的判断、流程、状态和隐喻转化为白底手绘正文配图，并强调角色必须参与核心动作，而不是作为装饰出现。`wechat-kafei-cat-editor` 在这个思路上，进一步面向微信公众号文章编辑场景，加入文章改写、微信排版、2.35:1 封面图和咖啡猫正文配图工作流。
+
+感谢 Ian 和 `helloianneo/ian-xiaohei-illustrations` 对中文内容配图 Skill 的启发。
+
 ## 注意事项
 
 `wechat-kafei-cat-editor/assets/` 里的图片主要用于风格参考和示例展示。真实文章生成时，应该基于当前文章重新设计隐喻和图片提示词，而不是直接复用示例图作为最终配图。
