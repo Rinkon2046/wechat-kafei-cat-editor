@@ -14,7 +14,7 @@ from pathlib import Path
 BODY_STYLE = (
     "margin:0;background:#fff;color:#1a1a1a;"
     "font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',"
-    "'Microsoft YaHei',Arial,sans-serif;font-size:16px;line-height:1.7;"
+    "'Microsoft YaHei',Arial,sans-serif;font-size:16px;line-height:1.6;text-align:left;"
 )
 
 SOURCE_KEYS = {
@@ -111,13 +111,13 @@ def extract_article(blocks: list[dict[str, str]]) -> tuple[str, str, list[dict[s
 
 def p(text: str, margin: str = "0 0 14px", *, indent: bool = True) -> str:
     indent_style = "text-indent:2em;" if indent else ""
-    return f'  <p style="margin:{margin};color:#444;font-size:15px;line-height:1.75;{indent_style}">{inline_markup(text)}</p>'
+    return f'  <p style="margin:{margin};color:#444;font-size:16px;line-height:1.6;text-align:left;{indent_style}">{inline_markup(text)}</p>'
 
 
 def quote(text: str, margin: str = "0 0 24px", size: str = "18px") -> str:
     return (
         f'  <p style="margin:{margin};font-size:{size};font-weight:700;color:#111;'
-        f'line-height:1.6;padding-left:14px;border-left:3px solid #111;">'
+        f'line-height:1.6;text-align:left;padding-left:14px;border-left:3px solid #111;">'
         f"{inline_markup(text)}</p>"
     )
 
@@ -131,7 +131,7 @@ def image_html(src: str, alt: str = "", caption: str = "", *, inline_images: boo
     ]
     if caption:
         parts.append(
-            f'  <p style="margin:-8px 0 22px;color:#aaa;font-size:12px;text-align:center;line-height:1.6;">'
+            f'  <p style="margin:-8px 0 22px;color:#aaa;font-size:12px;text-align:left;line-height:1.6;">'
             f"{inline_markup(caption)}</p>"
         )
     return parts
@@ -172,13 +172,13 @@ def render(
         '<section style="max-width:660px;margin:0 auto;padding:36px 20px 52px;background:#fff;box-sizing:border-box;">',
         "",
         f'  <p style="margin:0 0 10px;color:#aaa;font-size:12px;letter-spacing:2px;">{html.escape(eyebrow)}</p>',
-        f'  <h1 style="margin:0 0 14px;color:#111;font-size:26px;line-height:1.3;font-weight:700;letter-spacing:-0.2px;">{inline_markup(title)}</h1>',
+        f'  <h1 style="margin:0 0 14px;color:#111;font-size:26px;line-height:1.3;font-weight:700;letter-spacing:-0.2px;text-align:left;">{inline_markup(title)}</h1>',
     ]
 
     if subtitle:
         parts.append(
-            f'  <p style="margin:0 0 28px;color:#666;font-size:15px;line-height:1.7;'
-            f'padding-bottom:24px;border-bottom:1px solid #eee;">{inline_markup(subtitle)}</p>'
+            f'  <p style="margin:0 0 28px;color:#666;font-size:16px;line-height:1.6;'
+            f'text-align:left;padding-bottom:24px;border-bottom:1px solid #eee;">{inline_markup(subtitle)}</p>'
         )
     else:
         parts.append('  <p style="margin:0 0 28px;padding-bottom:8px;border-bottom:1px solid #eee;"></p>')
@@ -199,7 +199,7 @@ def render(
                     "",
                     f'  <p style="margin:40px 0 4px;color:#aaa;font-size:11px;letter-spacing:2px;">{section_number:02d}</p>',
                     f'  <h2 style="margin:0 0 14px;color:#111;font-size:20px;font-weight:700;line-height:1.4;'
-                    f'padding-bottom:12px;border-bottom:1px solid #eee;">{inline_markup(text)}</h2>',
+                    f'text-align:left;padding-bottom:12px;border-bottom:1px solid #eee;">{inline_markup(text)}</h2>',
                     "",
                 ]
             )
@@ -228,7 +228,7 @@ def render(
     parts.extend(
         [
             "",
-            f'  <p style="margin:40px 0 0;padding-top:20px;border-top:1px solid #eee;color:#ccc;font-size:12px;text-align:center;line-height:1.6;">{html.escape(footer)}</p>',
+            f'  <p style="margin:40px 0 0;padding-top:20px;border-top:1px solid #eee;color:#ccc;font-size:12px;text-align:left;line-height:1.6;">{html.escape(footer)}</p>',
             "",
             "</section>",
             "</body>",
